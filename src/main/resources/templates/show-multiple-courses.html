@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org" >
+	
+<body>
+	
+	<h1>Atzīmes:</h1>
+	<table border="1px">
+		<tr>
+			<td>Id</td>
+			<td>Nosaukums</td>
+			<td>Kredītpunkti</td>
+			<td>Professora vārds</td>
+			<td>Professora uzvārds</td>
+			<td>Professora grāds</td>
+		</tr>
+		<th:block th:each="course : ${package}">
+		<tr>
+			<td th:text="${course.idc}" ></td>
+			<td th:text="${course.title}" ></td>
+			<td th:text="${course.creditpoints}" ></td>
+			<td th:text="${course.professor.name}" ></td>
+			<td th:text="${course.professor.surname}" ></td>
+			<td th:text="${course.professor.degree}" ></td>
+		</tr>
+		</th:block>
+	</table>
+	
+
+	
+</body>
+
+
+
+</html>
