@@ -2,6 +2,7 @@ package lv.venta.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configurers.provisioning.UserDetailsManagerConfigurer.UserDetailsBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,30 +19,27 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 	
 	@Bean
-	public UserDetailsManager createDummyUsers() {
+	public PasswordEncoder getEncoder() {
 		PasswordEncoder encoder = 
 				PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		
-		
-		UserDetails userD1 = 
-				User.builder()
-				.username("rodrigo")
-				.password(encoder.encode("123"))
-				.authorities("USER")
-				.build();
-		UserDetails userD2 = 
-				User.builder()
-				.username("rodrigoz")
-				.password(encoder.encode("321"))
-				.authorities("ADMIN")
-				.build();
-		
-		InMemoryUserDetailsManager manager = 
-				new InMemoryUserDetailsManager(userD1, userD2);
-		return manager;
-		
+		return encoder;
 	}
 	
+	@Bean
+	public UserDetailsManager getUserDetailsManager() {
+		MyUserDetailsManager manager = new MyUserDetailsManager();
+		return manager;
+	}
+	
+	@Bean
+	public DaoAuthenticationProvider setProvider() {
+		DaoAuthenticationProvider dao =
+				new DaoAuthenticationProvider(getUserDetailsManager());
+		dao.setPasswordEncoder(getEncoder());
+		return dao;
+		
+	}
 	
 	@Bean
 	public SecurityFilterChain httpPermisions(HttpSecurity http) {
