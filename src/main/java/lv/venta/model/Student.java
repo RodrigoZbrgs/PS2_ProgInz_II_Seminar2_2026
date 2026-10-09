@@ -58,7 +58,7 @@ public class Student {
 	@JoinColumn(name = "idu")
 	private MyUser user;
 	
-	public Student(String name, String surname) {
+	public Student(String name, String surname, MyUser user) {
 		setName(name);
 		setSurname(surname);
 		setUser(user);

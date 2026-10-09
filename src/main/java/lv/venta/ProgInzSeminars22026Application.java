@@ -46,19 +46,9 @@ public class ProgInzSeminars22026Application {
 				Professor p2 = new Professor("Kārlis", "Immers", Degree.master);
 				profRepo.saveAll(Arrays.asList(p1,p2));
 				
-				Student s1 = new Student("Mikus Valts", "Šarovs");
-				Student s2 = new Student("Kristers", "Dogudovs");
-				studRepo.saveAll(Arrays.asList(s1,s2));
-				
 				Course c1 = new Course("Programmēšana JAVA", 4, p1);//JAVA
 				Course c2 = new Course("Tīmekļa tehnoloģijas", 6, p2);//WEBTech
 				courseRepo.saveAll(Arrays.asList(c1,c2));
-				
-				Grade g1 = new Grade(8, s1, c1);//Mikus nopelnīja 8 JAVA
-				Grade g2 = new Grade(6, s1, c2);//Mikus nopelnīja 6 WEBTech
-				Grade g3 = new Grade(10, s2, c1);//Kristers nopelnīja 10 JAVA
-				Grade g4 = new Grade(3, s2, c2);//Kristers nopelnīja 3 WEBTech
-				gradeRepo.saveAll(Arrays.asList(g1,g2,g3,g4));
 				
 				MyAuthority auth1 = new MyAuthority("ADMIN");
 				MyAuthority auth2 = new MyAuthority("USER");
@@ -67,9 +57,9 @@ public class ProgInzSeminars22026Application {
 				PasswordEncoder encoder = 
 						PasswordEncoderFactories.createDelegatingPasswordEncoder();
 				
-				MyUser user1 = new MyUser("rodrigo", encoder.encode("123"), auth2);
+				MyUser user1 = new MyUser("Mikus", encoder.encode("123"), auth2);
 				MyUser user2 = new MyUser("janis", encoder.encode("321"), auth1 );
-				MyUser user3 = new MyUser("nils", encoder.encode("456"), auth2, auth1);
+				MyUser user3 = new MyUser("Kristers", encoder.encode("456"), auth2, auth1);
 				userRepo.saveAll(Arrays.asList(user1, user2, user3));
 				
 				auth1.addUser(user2);
@@ -77,6 +67,19 @@ public class ProgInzSeminars22026Application {
 				auth2.addUser(user1);
 				auth2.addUser(user3);
 				authRepo.saveAll(Arrays.asList(auth1, auth2));
+				
+				Student s1 = new Student("Mikus Valts", "Šarovs", user1);
+				Student s2 = new Student("Kristers", "Dogudovs", user3);
+				studRepo.saveAll(Arrays.asList(s1,s2));
+				
+				Grade g1 = new Grade(8, s1, c1);//Mikus nopelnīja 8 JAVA
+				Grade g2 = new Grade(6, s1, c2);//Mikus nopelnīja 6 WEBTech
+				Grade g3 = new Grade(10, s2, c1);//Kristers nopelnīja 10 JAVA
+				Grade g4 = new Grade(3, s2, c2);//Kristers nopelnīja 3 WEBTech
+				gradeRepo.saveAll(Arrays.asList(g1,g2,g3,g4));
+				
+
+				
 			}
 		};
 		
