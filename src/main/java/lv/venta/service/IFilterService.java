@@ -9,7 +9,7 @@ import lv.venta.model.enums.Degree;
 
 public interface IFilterService {
 
-	public abstract ArrayList<Grade> filterGradesByStudentId(long id)
+	public abstract ArrayList<Grade> filterGradesByStudentId(long id, String usernameInSession)
 		throws Exception;
 	
 	public abstract ArrayList<Grade> filterGradesByCourseTitle(String title)

@@ -12,4 +12,6 @@ public interface IStudentRepo extends CrudRepository<Student, Long> {
 
 	boolean existsByNameAndSurname(String name, String surname);
 
+	Student findByUserUsername(String usernameInSession);
+
 }

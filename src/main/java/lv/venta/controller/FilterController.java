@@ -25,7 +25,7 @@ public class FilterController {
 		
 		try
 		{
-			model.addAttribute("package", filterService.filterGradesByStudentId(id));
+			model.addAttribute("package", filterService.filterGradesByStudentId(id, auth.getName()));
 			return "show-multiple-grades";
 		}
 		catch (Exception e) {
