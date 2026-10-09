@@ -48,8 +48,8 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(
 				auth->auth
 				.requestMatchers("/student/crud/all").permitAll()
-				.requestMatchers("/student/crud/delete/**").hasAuthority("ADMIN")
-				.requestMatchers("/student/crud/add").hasAnyAuthority("ADMIN", "USER")
+				//.requestMatchers("/student/crud/delete/**").hasAuthority("ADMIN")
+				.requestMatchers("/student/crud/add").permitAll()
 				.requestMatchers("/filter/**").hasAuthority("USER"));
 		
 		http.formLogin(auth->auth.permitAll());

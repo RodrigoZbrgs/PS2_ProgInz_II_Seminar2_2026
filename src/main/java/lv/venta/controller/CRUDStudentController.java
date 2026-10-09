@@ -1,12 +1,18 @@
 package lv.venta.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
@@ -24,54 +30,49 @@ public class CRUDStudentController {
 	//TODO uztaisīt kontrolierus priekš create un update un retrieve by id
 	
 	@GetMapping("/all")//localhost:8080/student/crud/all
-	public String getControllerAllStudents(Model model) {
+	public ResponseEntity<?> getControllerAllStudents() {
 		try
 		{
-			model.addAttribute("package", studService.retrieveAll());
-			return "show-multiple-students";
+			return new ResponseEntity<ArrayList<Student>>
+			(studService.retrieveAll(), HttpStatusCode.valueOf(200));
+		
+			
 		}
 		catch (Exception e) {
-			model.addAttribute("package", e.getMessage());
-			return "error-page";
+			
+			return new ResponseEntity<String>(e.getMessage(), HttpStatusCode.valueOf(409));
 		}
 	}
 	
-	@GetMapping("/delete/{id}")//localhost:8080/student/crud/delete/2
-	public String getControllerDeletyById(@PathVariable(name = "id") long id,
-			Model model) {
+	@DeleteMapping("/delete/{id}")//localhost:8080/student/crud/delete/2
+	public ResponseEntity<?> getControllerDeletyById(@PathVariable(name = "id") long id) {
 		try
 		{
 			studService.deleteById(id);
-			model.addAttribute("package", studService.retrieveAll());
-			return "show-multiple-students";
+			return new ResponseEntity<ArrayList<Student>>(studService.retrieveAll(), HttpStatusCode.valueOf(200));
 		}
 		catch (Exception e) {
-			model.addAttribute("package", e.getMessage());
-			return "error-page";
+			
+			return new ResponseEntity<String>(e.getMessage(), HttpStatusCode.valueOf(409));
 		}
 	}
 	
-	@GetMapping("/add")//localhost:8080/student/crud/add
-	public String getControllerCreateStudent(Model model) {
-		model.addAttribute("student", new Student());
-		return "add-student-page";
-	}
 	
-	@PostMapping("/add")
-	public String postController(@Valid Student student, 
-			BindingResult result, Model model) {
+	@PostMapping("/add")//
+	public ResponseEntity<?> postController(@Valid @RequestBody Student student, BindingResult result) {
 		if(result.hasErrors()) {
-			return "add-student-page";
+			return new ResponseEntity<Integer>(result.getErrorCount(), 
+					HttpStatusCode.valueOf(409));
 		}
 		
 		try
 		{
 			studService.create(student);
-			return "redirect:/student/crud/all";
+			return new ResponseEntity<ArrayList<Student>>(studService.retrieveAll(), HttpStatusCode.valueOf(200));
 		}
 		catch (Exception e) {
-			model.addAttribute("package", e.getMessage());
-			return "error-page";
+			
+			return new ResponseEntity<String>(e.getMessage(), HttpStatusCode.valueOf(409));
 		}
 	}
 	
