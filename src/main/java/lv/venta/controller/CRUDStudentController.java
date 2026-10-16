@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,9 +76,23 @@ public class CRUDStudentController {
 		}
 	}
 	
-	//TODO update 
-//	@PutMapping("/update")
-//	public ResponseEntity<?> putController() {
-//		
-//	}
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> putControllerUpdateById(@PathVariable(name = "id") long id,
+			@RequestBody Student student, BindingResult result) {
+		if(result.hasErrors()) {
+			return new ResponseEntity<Integer>(result.getErrorCount(), 
+					HttpStatusCode.valueOf(409));
+		}
+		
+		try {
+			studService.updateById(id, student.getName(), student.getSurname());
+			return new ResponseEntity<ArrayList<Student>>(studService.retrieveAll(),
+					HttpStatusCode.valueOf(200));
+		}
+
+		catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatusCode.valueOf(409));
+		}
+
+	}
 }

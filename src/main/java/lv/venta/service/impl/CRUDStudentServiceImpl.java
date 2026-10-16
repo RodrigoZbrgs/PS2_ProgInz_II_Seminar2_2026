@@ -81,8 +81,20 @@ public class CRUDStudentServiceImpl implements ICRUDStudentService{
 
 	@Override
 	public void updateById(long id, String name, String surname) throws Exception {
-		// TODO Auto-generated method stub
+		Student studentToUpdate = retrieveById(id);
 		
+		if(name == null || surname == null) {
+			throw new Exception("Nav korekti ievades dati");
 	}
+		if(name != null) {
+			studentToUpdate.setName(name);
+		}
+		
+		if(surname != null) {
+			studentToUpdate.setSurname(surname);
+		}
+		
+		studRepo.save(studentToUpdate);
 
+}
 }
