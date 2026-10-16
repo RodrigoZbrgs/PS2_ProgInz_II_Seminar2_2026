@@ -44,9 +44,15 @@ public class GradeServiceImpl implements IGradeService {
 			throw new Exception("Tāds kurss neeksistē!");
 		}
 		
+
+		
 		Student stud = studRepo.findByNameandSurname(gradeDTO.getStudName(), gradeDTO.getStudSurname());
 		
 		Course course = courseRepo.findByTitle(gradeDTO.getCourseTitle());
+		
+		if(!gradeRepo.existsByGradevalueAndStudentAndCourse(gradeDTO.getGradeValue(), stud, course)) {
+			throw new Exception("Šis jau eksistē");
+		}
 		
 		Grade grade = new Grade(gradeDTO.getGradeValue(), stud, course);
 		gradeRepo.save(grade);
