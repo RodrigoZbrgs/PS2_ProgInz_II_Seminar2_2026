@@ -15,4 +15,6 @@ public interface ICourseRepo extends CrudRepository<Course, Long>{
 
 	ArrayList<Course> findByCreditpointsLessThan(int level);
 
+	Course findByTitle(String courseTitle);
+
 }
