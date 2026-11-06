@@ -22,7 +22,7 @@ class StudentTest {
 	@Test
 	public void testDefaultConstructor() {
 		Student student = new Student();
-		student.setName("Janis");
+		student.setName("Jānis");
 		student.setSurname("Zīle");
 		assertEquals("Jānis", student.getName());
 		assertEquals("Zīle", student.getSurname());
